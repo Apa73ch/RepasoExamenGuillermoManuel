@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Tipos de Datos Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .professor {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .question-container {
+            background: linear-gradient(135deg, #16a085 0%, #27ae60 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            color: white;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .question {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .option.selected {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .option.correct {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .option.incorrect {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .text-input {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .tf-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .tf-option {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .tf-option:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        .tf-option.selected {
+            background: #3498db;
+            color: white;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+
+        .results {
+            background: linear-gradient(135deg, #95a5a6 0%, #bdc3c7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .feedback {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .tf-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐍 Repaso para Examen Completivo Primera Parte 🐍</h1>
+            <p>Tipos de Datos en Python</p>
+            <div class="professor">Profesor: Adrian Fondeur</div>
+        </div>
+
+        <div class="content">
+            <form id="quizForm">
+                <!-- Pregunta 1 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 1 de 20</div>
+                    <div class="question">¿Cuál de estos es un tipo de dato numérico entero en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) float</button>
+                        <button type="button" class="option" data-value="b">b) int</button>
+                        <button type="button" class="option" data-value="c">c) str</button>
+                        <button type="button" class="option" data-value="d">d) bool</button>
+                    </div>
+                    <input type="hidden" name="q1" data-correct="b">
+                </div>
+
+                <!-- Pregunta 2 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 2 de 20</div>
+                    <div class="question">¿Cuál es el resultado de 5 / 2 en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) 2</button>
+                        <button type="button" class="option" data-value="b">b) 2.5</button>
+                        <button type="button" class="option" data-value="c">c) 3</button>
+                        <button type="button" class="option" data-value="d">d) Error</button>
+                    </div>
+                    <input type="hidden" name="q2" data-correct="b">
+                </div>
+
+                <!-- Pregunta 3 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 3 de 20</div>
+                    <div class="question">¿Qué función usamos para conocer el tipo de una variable en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) len()</button>
+                        <button type="button" class="option" data-value="b">b) type()</button>
+                        <button type="button" class="option" data-value="c">c) str()</button>
+                        <button type="button" class="option" data-value="d">d) print()</button>
+                    </div>
+                    <input type="hidden" name="q3" data-correct="b">
+                </div>
+
+                <!-- Pregunta 4 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 4 de 20</div>
+                    <div class="question">¿Cuál es el resultado de: "Hola" + "Mundo"?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) Error</button>
+                        <button type="button" class="option" data-value="b">b) HolaMundo</button>
+                        <button type="button" class="option" data-value="c">c) Hola Mundo</button>
+                        <button type="button" class="option" data-value="d">d) Hola+Mundo</button>
+                    </div>
+                    <input type="hidden" name="q4" data-correct="b">
+                </div>
+
+                <!-- Pregunta 5 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 5 de 20</div>
+                    <div class="question">¿Qué puede contener una lista en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) Solo números</button>
+                        <button type="button" class="option" data-value="b">b) Solo texto</button>
+                        <button type="button" class="option" data-value="c">c) Diferentes tipos de datos</button>
+                        <button type="button" class="option" data-value="d">d) Solo booleanos</button>
+                    </div>
+                    <input type="hidden" name="q5" data-correct="c">
+                </div>
+
+                <!-- Pregunta 6 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 6 de 20</div>
+                    <div class="question">¿Cuál símbolo se usa para crear una lista en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) { }</button>
+                        <button type="button" class="option" data-value="b">b) ( )</button>
+                        <button type="button" class="option" data-value="c">c) [ ]</button>
+                        <button type="button" class="option" data-value="d">d) " "</button>
+                    </div>
+                    <input type="hidden" name="q6" data-correct="c">
+                </div>
+
+                <!-- Pregunta 7 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 7 de 20</div>
+                    <div class="question">¿Cómo se llama el tipo de dato que puede ser True o False?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) int</button>
+                        <button type="button" class="option" data-value="b">b) bool</button>
+                        <button type="button" class="option" data-value="c">c) str</button>
+                        <button type="button" class="option" data-value="d">d) float</button>
+                    </div>
+                    <input type="hidden" name="q7" data-correct="b">
+                </div>
+
+                <!-- Pregunta 8 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 8 de 20</div>
+                    <div class="question">¿De qué tipo es el número 3.0 en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) int</button>
+                        <button type="button" class="option" data-value="b">b) float</button>
+                        <button type="button" class="option" data-value="c">c) str</button>
+                        <button type="button" class="option" data-value="d">d) bool</button>
+                    </div>
+                    <input type="hidden" name="q8" data-correct="b">
+                </div>
+
+                <!-- Pregunta 9 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 9 de 20</div>
+                    <div class="question">¿Cuál es el resultado de: len("Python")?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) 5</button>
+                        <button type="button" class="option" data-value="b">b) 6</button>
+                        <button type="button" class="option" data-value="c">c) 7</button>
+                        <button type="button" class="option" data-value="d">d) Error</button>
+                    </div>
+                    <input type="hidden" name="q9" data-correct="b">
+                </div>
+
+                <!-- Pregunta 10 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 10 de 20</div>
+                    <div class="question">¿Qué símbolo se usa para crear un diccionario en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) [ ]</button>
+                        <button type="button" class="option" data-value="b">b) ( )</button>
+                        <button type="button" class="option" data-value="c">c) { }</button>
+                        <button type="button" class="option" data-value="d">d) " "</button>
+                    </div>
+                    <input type="hidden" name="q10" data-correct="c">
+                </div>
+
+                <!-- Pregunta 11 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 11 de 20</div>
+                    <div class="question">¿Cuál es el resultado de: 10 // 3?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) 3.33</button>
+                        <button type="button" class="option" data-value="b">b) 3</button>
+                        <button type="button" class="option" data-value="c">c) 1</button>
+                        <button type="button" class="option" data-value="d">d) 4</button>
+                    </div>
+                    <input type="hidden" name="q11" data-correct="b">
+                </div>
+
+                <!-- Pregunta 12 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 12 de 20</div>
+                    <div class="question">¿Cuál es una característica de las tuplas en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) Son mutables (se pueden cambiar)</button>
+                        <button type="button" class="option" data-value="b">b) Son inmutables (no se pueden cambiar)</button>
+                        <button type="button" class="option" data-value="c">c) Solo pueden contener números</button>
+                        <button type="button" class="option" data-value="d">d) No pueden estar vacías</button>
+                    </div>
+                    <input type="hidden" name="q12" data-correct="b">
+                </div>
+
+                <!-- Pregunta 13 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 13 de 20</div>
+                    <div class="question">¿Cuál es el resultado de: str(25)?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) 25 (número)</button>
+                        <button type="button" class="option" data-value="b">b) "25" (texto)</button>
+                        <button type="button" class="option" data-value="c">c) Error</button>
+                        <button type="button" class="option" data-value="d">d) 25.0</button>
+                    </div>
+                    <input type="hidden" name="q13" data-correct="b">
+                </div>
+
+                <!-- Pregunta 14 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 14 de 20</div>
+                    <div class="question">¿Cómo se llama el operador % en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) División</button>
+                        <button type="button" class="option" data-value="b">b) Módulo</button>
+                        <button type="button" class="option" data-value="c">c) Multiplicación</button>
+                        <button type="button" class="option" data-value="d">d) Potencia</button>
+                    </div>
+                    <input type="hidden" name="q14" data-correct="b">
+                </div>
+
+                <!-- Pregunta 15 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 15 de 20</div>
+                    <div class="question">¿Cuál es el resultado de bool(0) en Python?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) True</button>
+                        <button type="button" class="option" data-value="b">b) False</button>
+                        <button type="button" class="option" data-value="c">c) 0</button>
+                        <button type="button" class="option" data-value="d">d) Error</button>
+                    </div>
+                    <input type="hidden" name="q15" data-correct="b">
+                </div>
+
+                <!-- Pregunta 16 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 16 de 20</div>
+                    <div class="question">¿Cuál es el resultado de: [1, 2, 3] * 2?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) [2, 4, 6]</button>
+                        <button type="button" class="option" data-value="b">b) [1, 2, 3, 1, 2, 3]</button>
+                        <button type="button" class="option" data-value="c">c) Error</button>
+                        <button type="button" class="option" data-value="d">d) [1, 2, 3, 2]</button>
+                    </div>
+                    <input type="hidden" name="q16" data-correct="b">
+                </div>
+
+                <!-- Pregunta 17 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 17 de 20</div>
+                    <div class="question">¿Qué función convierte un texto a número entero?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) str()</button>
+                        <button type="button" class="option" data-value="b">b) float()</button>
+                        <button type="button" class="option" data-value="c">c) int()</button>
+                        <button type="button" class="option" data-value="d">d) bool()</button>
+                    </div>
+                    <input type="hidden" name="q17" data-correct="c">
+                </div>
+
+                <!-- Pregunta 18 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 18 de 20</div>
+                    <div class="question">¿Cuál es el resultado de <strong>bool("")</strong> en Python?<br><small>(Nota: "" es una cadena vacía)</small></div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) True</button>
+                        <button type="button" class="option" data-value="b">b) False</button>
+                        <button type="button" class="option" data-value="c">c) ""</button>
+                        <button type="button" class="option" data-value="d">d) Error</button>
+                    </div>
+                    <input type="hidden" name="q18" data-correct="b">
+                </div>
+
+                <!-- Pregunta 19 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 19 de 20</div>
+                    <div class="question">¿Cuál es el resultado de: 2 ** 3?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) 6</button>
+                        <button type="button" class="option" data-value="b">b) 8</button>
+                        <button type="button" class="option" data-value="c">c) 9</button>
+                        <button type="button" class="option" data-value="d">d) 5</button>
+                    </div>
+                    <input type="hidden" name="q19" data-correct="b">
+                </div>
+
+                <!-- Pregunta 20 - Opción múltiple -->
+                <div class="question-container">
+                    <div class="question-number">Pregunta 20 de 20</div>
+                    <div class="question">¿Cómo se llama el tipo de dato que almacena pares clave-valor?</div>
+                    <div class="options">
+                        <button type="button" class="option" data-value="a">a) list</button>
+                        <button type="button" class="option" data-value="b">b) tuple</button>
+                        <button type="button" class="option" data-value="c">c) dict</button>
+                        <button type="button" class="option" data-value="d">d) set</button>
+                    </div>
+                    <input type="hidden" name="q20" data-correct="c">
+                </div>
+
+                <button type="submit" class="submit-btn">🚀 ¡Enviar Respuestas! 🚀</button>
+            </form>
+
+            <div class="results" id="results">
+                <div class="score" id="score"></div>
+                <div class="feedback" id="feedback"></div>
+                <button class="retry-btn" onclick="retryQuiz()">🔄 Intentar de Nuevo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Manejar selección de opciones múltiples
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Deseleccionar otras opciones del mismo grupo
+                const container = this.closest('.question-container');
+                container.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                
+                // Seleccionar esta opción
+                this.classList.add('selected');
+                
+                // Guardar respuesta
+                const hiddenInput = container.querySelector('input[type="hidden"]');
+                hiddenInput.value = this.dataset.value;
+            });
+        });
+
+        // Ya no necesitamos opciones de Verdadero/Falso
+
+        // Manejar envío del formulario
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            let totalQuestions = 20;
+            
+            // Verificar cada respuesta
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionElement = document.querySelector(`[name="q${i}"]`);
+                const correctAnswer = questionElement.dataset.correct.toLowerCase();
+                const userAnswer = questionElement.value.toLowerCase();
+                
+                if (userAnswer === correctAnswer) {
+                    score++;
+                }
+            }
+            
+            // Mostrar resultados
+            const percentage = (score / totalQuestions) * 100;
+            document.getElementById('score').textContent = `${score}/${totalQuestions} (${percentage.toFixed(1)}%)`;
+            
+            let feedbackText = '';
+            if (percentage >= 90) {
+                feedbackText = '🎉 ¡Excelente! Dominas muy bien los tipos de datos en Python.';
+            } else if (percentage >= 75) {
+                feedbackText = '👍 ¡Muy bien! Tienes un buen conocimiento, solo necesitas repasar algunos conceptos.';
+            } else if (percentage >= 60) {
+                feedbackText = '📚 Bien, pero debes estudiar más. Practica con los tipos de datos y sus operaciones.';
+            } else {
+                feedbackText = '💪 No te desanimes. Repasa los conceptos básicos y vuelve a intentarlo.';
+            }
+            
+            document.getElementById('feedback').textContent = feedbackText;
+            document.getElementById('results').style.display = 'block';
+            
+            // Scroll a los resultados
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function retryQuiz() {
+            // Reiniciar formulario
+            document.getElementById('quizForm').reset();
+            
+            // Limpiar selecciones
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Limpiar valores de inputs hidden
+            document.querySelectorAll('input[type="hidden"]').forEach(input => {
+                input.value = '';
+            });
+            
+            // Ocultar resultados
+            document.getElementById('results').style.display = 'none';
+            
+            // Scroll al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html> 
