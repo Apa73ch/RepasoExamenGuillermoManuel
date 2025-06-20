@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examen de Repaso – Python Básico</title>
+  <style>
+    /* Reset y tipografía básica */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      background: #f4f6f9;
+      color: #2c3e50;
+      padding: 20px;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 40px 30px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.4rem;
+      margin-bottom: 5px;
+    }
+    header p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    main {
+      padding: 40px 35px 50px;
+    }
+
+    /* Títulos de secciones */
+    h2 {
+      font-size: 1.4rem;
+      margin: 30px 0 15px;
+      color: #34495e;
+    }
+
+    /* Listas ordenadas para preguntas */
+    ol {
+      margin-left: 22px;
+    }
+    ol li {
+      margin: 10px 0;
+    }
+
+    /* Subrayado para espacios en blanco */
+    .blank {
+      display: inline-block;
+      border-bottom: 1px solid #999;
+      width: 180px;
+      height: 18px;
+      vertical-align: middle;
+    }
+
+    /* Opciones listadas */
+    .options-list {
+      columns: 3 250px;
+      -webkit-columns: 3 250px;
+      -moz-columns: 3 250px;
+      list-style: disc inside;
+      margin-bottom: 25px;
+    }
+    .options-list li {
+      margin: 4px 0;
+    }
+
+    /* Tabla de correspondencias */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #f1f4f9;
+    }
+
+    /* Verdadero / Falso */
+    .tf-list {
+      margin-left: 22px;
+    }
+    .tf-list li {
+      margin: 8px 0;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #95a5a6;
+      padding: 25px 15px;
+      background: #fafbfc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Examen de Repaso – Python Básico</h1>
+      <p>Nombre: __________________________ &nbsp;&nbsp; Fecha: ____________</p>
+    </header>
+
+    <main>
+      <!-- I. Complete the blanks -->
+      <h2>I. Completa los espacios en blanco usando la palabra correcta (1 pt c/u, 20 pts total)</h2>
+      <p><strong>Opciones:</strong></p>
+      <ul class="options-list">
+        <li>values</li><li>types</li><li>booleans</li><li>list</li><li>tuple</li><li>while</li><li>continue</li><li>for</li><li>break</li><li>if</li><li>elif</li><li>pass</li><li>else</li><li>int</li><li>float</li><li>str</li><li>bool</li><li>lists</li><li>tuples</li><li>sets</li><li>dictionaries</li><li>not</li>
+      </ul>
+      <ol>
+        <li>In Python, <span class="blank"></span> are used to store data that can be referenced and manipulated later in the program.</li>
+        <li>The basic <span class="blank"></span> in Python include integers, floating-point numbers, strings, and booleans.</li>
+        <li>To store multiple values in a single variable, Python provides collection types such as <span class="blank"></span> and <span class="blank"></span>.</li>
+        <li>A <span class="blank"></span> loop repeats a block of code as long as a specified condition is true.</li>
+        <li>The <span class="blank"></span> keyword is used to skip an iteration of a loop and continue with the next one.</li>
+        <li>A <span class="blank"></span> loop iterates over a sequence (like a list or string) and executes code for each item.</li>
+        <li>The <span class="blank"></span> keyword is used to break out of a loop prematurely.</li>
+        <li>The <span class="blank"></span> statement is used to make decisions based on conditions.</li>
+        <li>The <span class="blank"></span> statement provides an alternative when the <code>if</code> condition is false.</li>
+        <li>The <span class="blank"></span> statement is used when no action is needed.</li>
+        <li>The <span class="blank"></span> statement is used if none of the previous conditions are true.</li>
+        <li>The <span class="blank"></span> data type is used to declare whole numbers (e.g. 10, -5).</li>
+        <li>The <span class="blank"></span> data type is used to represent decimal numbers.</li>
+        <li>Textual data is represented using the <span class="blank"></span> data type.</li>
+        <li>The <span class="blank"></span> data type represents values like <code>True</code> or <code>False</code>.</li>
+        <li><span class="blank"></span> are mutable, ordered collections that can hold elements of different types.</li>
+        <li><span class="blank"></span> are immutable, ordered collections.</li>
+        <li><span class="blank"></span> are unordered collections that store only unique values.</li>
+        <li><span class="blank"></span> are mutable, unordered collections that store key-value pairs.</li>
+        <li>The <span class="blank"></span> keyword is used to negate the value of a boolean expression.</li>
+      </ol>
+
+      <!-- II. Match each collection type -->
+      <h2>II. Relaciona cada tipo de colección con sus características (1 pt c/u, 20 pts total)</h2>
+      <p><em>Escribe «Yes» o «No» en cada cuadro.</em></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Syntax</th>
+            <th>Ordered</th>
+            <th>Mutable</th>
+            <th>Indexed</th>
+            <th>Slicing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>String</td>
+            <td>" "</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>List</td>
+            <td>[ ]</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Tuple</td>
+            <td>( )</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Dictionary</td>
+            <td>{key:val}</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Set</td>
+            <td>{ }</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- III. Data types and examples -->
+      <h2>III. Tipos de datos y ejemplos (1 pt c/u, 5 pts total)</h2>
+      <p><em>Escribe el tipo de dato que representa cada uno: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>tuple</code>, <code>set</code>, <code>dict</code>, <code>list</code></em></p>
+      <ol>
+        <li>42 → <span class="blank"></span></li>
+        <li>"Hello, World!" → <span class="blank"></span></li>
+        <li>True → <span class="blank"></span></li>
+        <li>(1, 2, 3) → <span class="blank"></span></li>
+        <li>{"name": "Alice", "age": 30} → <span class="blank"></span></li>
+      </ol>
+
+      <!-- IV. True or False -->
+      <h2>IV. Verdadero o Falso (1 pt c/u, 10 pts total)</h2>
+      <p><em>Escribe <strong>T</strong> si es verdadera o <strong>F</strong> si es falsa.</em></p>
+      <ol class="tf-list">
+        <li>Variables in Python must be declared with a specific data type like in Java.</li>
+        <li>The <code>str</code> data type is used to represent boolean values.</li>
+        <li>A list is mutable and can be changed after it is created.</li>
+        <li>Tuples are mutable and can be modified.</li>
+        <li>The <code>if-elif-else</code> structure allows decisions to be made based on conditions.</li>
+        <li>A <code>while</code> loop always runs at least once.</li>
+        <li>The <code>for</code> loop can be used with strings.</li>
+        <li>The <code>//</code> operator is used for integer (floor) division.</li>
+        <li>The <code>len()</code> function returns the number of elements in a collection.</li>
+        <li>Dictionary keys must be unique, but values can be duplicated.</li>
+      </ol>
+    </main>
+
+    <footer>
+      &copy; 2025 Examen de Python Básico – Todos los derechos reservados.
+    </footer>
+  </div>
+</body>
+</html> 
