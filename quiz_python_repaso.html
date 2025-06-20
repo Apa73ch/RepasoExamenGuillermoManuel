@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Repaso - Python Básico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-content {
+            padding: 30px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .question-text {
+            color: #34495e;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .option label {
+            cursor: pointer;
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .score {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .score.excellent {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .score.good {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeaa7;
+        }
+
+        .score.needs-improvement {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .answer-review {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid;
+        }
+
+        .answer-review.correct {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .answer-review.incorrect {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .answer-review h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .answer-status {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .correct-answer {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .incorrect-answer {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #fa8072 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .quiz-content {
+                padding: 20px;
+            }
+            
+            .question {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Quiz de Repaso</h1>
+            <p>Python Básico - 8 Preguntas Clave</p>
+        </div>
+
+        <div class="quiz-content">
+            <!-- Pregunta 1 -->
+            <div class="question">
+                <h3>1. Variables y almacenamiento de datos</h3>
+                <div class="question-text">¿Qué es una variable en Python?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q1a" name="q1" value="A">
+                        <label for="q1a">A) Un tipo de error</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1b" name="q1" value="B">
+                        <label for="q1b">B) Una palabra reservada</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1c" name="q1" value="C">
+                        <label for="q1c">C) Un lugar donde se guarda información</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1d" name="q1" value="D">
+                        <label for="q1d">D) Una función especial</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 2 -->
+            <div class="question">
+                <h3>2. Tipos de datos básicos</h3>
+                <div class="question-text">¿Cuál de estos es un valor booleano en Python?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q2a" name="q2" value="A">
+                        <label for="q2a">A) "True"</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2b" name="q2" value="B">
+                        <label for="q2b">B) true</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2c" name="q2" value="C">
+                        <label for="q2c">C) False</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2d" name="q2" value="D">
+                        <label for="q2d">D) "false"</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 3 -->
+            <div class="question">
+                <h3>3. Tipos de colecciones</h3>
+                <div class="question-text">¿Cuál colección en Python <strong>no permite elementos repetidos</strong>?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q3a" name="q3" value="A">
+                        <label for="q3a">A) Lista (list)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3b" name="q3" value="B">
+                        <label for="q3b">B) Diccionario (dict)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3c" name="q3" value="C">
+                        <label for="q3c">C) Tupla (tuple)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3d" name="q3" value="D">
+                        <label for="q3d">D) Conjunto (set)</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 4 -->
+            <div class="question">
+                <h3>4. Control de flujo (condicionales)</h3>
+                <div class="question-text">¿Qué palabra se usa para <strong>ejecutar un bloque de código solo si una condición es verdadera</strong>?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q4a" name="q4" value="A">
+                        <label for="q4a">A) loop</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4b" name="q4" value="B">
+                        <label for="q4b">B) check</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4c" name="q4" value="C">
+                        <label for="q4c">C) if</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4d" name="q4" value="D">
+                        <label for="q4d">D) run</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 5 -->
+            <div class="question">
+                <h3>5. Control de flujo (bucles)</h3>
+                <div class="question-text">¿Qué palabra se usa para <strong>salir de un bucle antes de que termine</strong>?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q5a" name="q5" value="A">
+                        <label for="q5a">A) stop</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5b" name="q5" value="B">
+                        <label for="q5b">B) end</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5c" name="q5" value="C">
+                        <label for="q5c">C) break</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5d" name="q5" value="D">
+                        <label for="q5d">D) exit</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 6 -->
+            <div class="question">
+                <h3>6. Palabras clave especiales</h3>
+                <div class="question-text">¿Qué hace la palabra <code>pass</code> en Python?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q6a" name="q6" value="A">
+                        <label for="q6a">A) Detiene el programa</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6b" name="q6" value="B">
+                        <label for="q6b">B) Salta la línea de código</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6c" name="q6" value="C">
+                        <label for="q6c">C) No hace nada, solo pasa</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6d" name="q6" value="D">
+                        <label for="q6d">D) Continúa con el siguiente bucle</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 7 -->
+            <div class="question">
+                <h3>7. Booleanos y lógica</h3>
+                <div class="question-text">¿Qué operador se usa para <strong>negar</strong> una condición booleana?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q7a" name="q7" value="A">
+                        <label for="q7a">A) !</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7b" name="q7" value="B">
+                        <label for="q7b">B) not</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7c" name="q7" value="C">
+                        <label for="q7c">C) none</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7d" name="q7" value="D">
+                        <label for="q7d">D) False</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 8 -->
+            <div class="question">
+                <h3>8. Mutabilidad e inmutabilidad</h3>
+                <div class="question-text">¿Cuál de estas colecciones <strong>NO se puede modificar después de crearla</strong>?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q8a" name="q8" value="A">
+                        <label for="q8a">A) Lista (list)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8b" name="q8" value="B">
+                        <label for="q8b">B) Diccionario (dict)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8c" name="q8" value="C">
+                        <label for="q8c">C) Tupla (tuple)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8d" name="q8" value="D">
+                        <label for="q8d">D) Conjunto (set)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-container">
+                <button class="submit-btn" onclick="submitQuiz()">📊 Calificar Quiz</button>
+            </div>
+
+            <div id="results" class="results">
+                <div id="score" class="score"></div>
+                <div id="review"></div>
+                <div style="text-align: center;">
+                    <button class="retry-btn" onclick="retryQuiz()">🔄 Intentar de Nuevo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            q1: 'C',
+            q2: 'C', 
+            q3: 'D',
+            q4: 'C',
+            q5: 'C',
+            q6: 'C',
+            q7: 'B',
+            q8: 'C'
+        };
+
+        const questions = {
+            q1: {
+                title: "1. Variables y almacenamiento de datos",
+                question: "¿Qué es una variable en Python?",
+                options: {
+                    A: "Un tipo de error",
+                    B: "Una palabra reservada", 
+                    C: "Un lugar donde se guarda información",
+                    D: "Una función especial"
+                }
+            },
+            q2: {
+                title: "2. Tipos de datos básicos",
+                question: "¿Cuál de estos es un valor booleano en Python?",
+                options: {
+                    A: '"True"',
+                    B: "true",
+                    C: "False", 
+                    D: '"false"'
+                }
+            },
+            q3: {
+                title: "3. Tipos de colecciones",
+                question: "¿Cuál colección en Python no permite elementos repetidos?",
+                options: {
+                    A: "Lista (list)",
+                    B: "Diccionario (dict)",
+                    C: "Tupla (tuple)",
+                    D: "Conjunto (set)"
+                }
+            },
+            q4: {
+                title: "4. Control de flujo (condicionales)",
+                question: "¿Qué palabra se usa para ejecutar un bloque de código solo si una condición es verdadera?",
+                options: {
+                    A: "loop",
+                    B: "check",
+                    C: "if",
+                    D: "run"
+                }
+            },
+            q5: {
+                title: "5. Control de flujo (bucles)",
+                question: "¿Qué palabra se usa para salir de un bucle antes de que termine?",
+                options: {
+                    A: "stop",
+                    B: "end", 
+                    C: "break",
+                    D: "exit"
+                }
+            },
+            q6: {
+                title: "6. Palabras clave especiales",
+                question: "¿Qué hace la palabra 'pass' en Python?",
+                options: {
+                    A: "Detiene el programa",
+                    B: "Salta la línea de código",
+                    C: "No hace nada, solo pasa",
+                    D: "Continúa con el siguiente bucle"
+                }
+            },
+            q7: {
+                title: "7. Booleanos y lógica",
+                question: "¿Qué operador se usa para negar una condición booleana?",
+                options: {
+                    A: "!",
+                    B: "not",
+                    C: "none",
+                    D: "False"
+                }
+            },
+            q8: {
+                title: "8. Mutabilidad e inmutabilidad",
+                question: "¿Cuál de estas colecciones NO se puede modificar después de crearla?",
+                options: {
+                    A: "Lista (list)",
+                    B: "Diccionario (dict)",
+                    C: "Tupla (tuple)",
+                    D: "Conjunto (set)"
+                }
+            }
+        };
+
+        function submitQuiz() {
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            let userAnswers = {};
+            let allAnswered = true;
+
+            // Recopilar respuestas del usuario
+            for (let question in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedOption) {
+                    userAnswers[question] = selectedOption.value;
+                    if (selectedOption.value === correctAnswers[question]) {
+                        score++;
+                    }
+                } else {
+                    allAnswered = false;
+                }
+            }
+
+            if (!allAnswered) {
+                alert('Por favor, responde todas las preguntas antes de calificar.');
+                return;
+            }
+
+            // Mostrar resultados
+            displayResults(score, totalQuestions, userAnswers);
+        }
+
+        function displayResults(score, total, userAnswers) {
+            const percentage = Math.round((score / total) * 100);
+            const resultsDiv = document.getElementById('results');
+            const scoreDiv = document.getElementById('score');
+            const reviewDiv = document.getElementById('review');
+
+            // Determinar clase de puntuación
+            let scoreClass = '';
+            let scoreMessage = '';
+            
+            if (percentage >= 80) {
+                scoreClass = 'excellent';
+                scoreMessage = '¡Excelente! 🎉';
+            } else if (percentage >= 60) {
+                scoreClass = 'good';
+                scoreMessage = '¡Bien hecho! 👍';
+            } else {
+                scoreClass = 'needs-improvement';
+                scoreMessage = 'Necesitas repasar más 📚';
+            }
+
+            scoreDiv.className = `score ${scoreClass}`;
+            scoreDiv.innerHTML = `
+                ${scoreMessage}<br>
+                Tu puntuación: ${score}/${total} (${percentage}%)
+            `;
+
+            // Generar revisión de respuestas
+            let reviewHTML = '<h3>📋 Revisión de Respuestas:</h3>';
+            
+            for (let questionKey in correctAnswers) {
+                const userAnswer = userAnswers[questionKey];
+                const correctAnswer = correctAnswers[questionKey];
+                const isCorrect = userAnswer === correctAnswer;
+                const question = questions[questionKey];
+
+                reviewHTML += `
+                    <div class="answer-review ${isCorrect ? 'correct' : 'incorrect'}">
+                        <h4>${question.title}</h4>
+                        <p><strong>${question.question}</strong></p>
+                        <div class="answer-status">
+                            ${isCorrect ? '✅ Correcto' : '❌ Incorrecto'}
+                        </div>
+                        ${!isCorrect ? `
+                            <p class="incorrect-answer">Tu respuesta: ${userAnswer}) ${question.options[userAnswer]}</p>
+                        ` : ''}
+                        <p class="correct-answer">Respuesta correcta: ${correctAnswer}) ${question.options[correctAnswer]}</p>
+                    </div>
+                `;
+            }
+
+            reviewDiv.innerHTML = reviewHTML;
+            resultsDiv.style.display = 'block';
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function retryQuiz() {
+            // Limpiar todas las selecciones
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.checked = false;
+            });
+
+            // Ocultar resultados
+            document.getElementById('results').style.display = 'none';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Agregar efectos visuales cuando se selecciona una opción
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    const questionName = radio.name;
+                    
+                    // Remover selección previa
+                    const allOptionsForQuestion = document.querySelectorAll(`input[name="${questionName}"]`);
+                    allOptionsForQuestion.forEach(r => {
+                        r.closest('.option').style.background = 'white';
+                        r.closest('.option').style.borderColor = '#e0e0e0';
+                    });
+                    
+                    // Marcar opción seleccionada
+                    this.style.background = '#e8f4fd';
+                    this.style.borderColor = '#4facfe';
+                    radio.checked = true;
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
